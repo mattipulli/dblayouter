@@ -264,6 +264,18 @@ class HandlePost{
 		}
 		
 		///////////
+		
+		//SET ROW
+		
+		if( $type == 25 ){
+			$tab_id=$_POST['tab_id'];
+			$row=$_POST['row'];
+			$xml=$_POST['xml'];
+			$this->controller->controller_init_row();
+			$this->controller->controller_row->controller_row_set_row($tab_id, $row, $xml);
+		}
+		
+		///////////
 	}
 
 }

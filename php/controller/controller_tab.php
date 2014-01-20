@@ -73,7 +73,6 @@ class ControllerTab{
 		if($tab_id!=NULL){
 			$tabObj=new Tab;
 			$tabObj->tab_id=$tab_id;
-			
 			$tabObjRet=$this->DB->db_tab_get($tabObj);
 			$this->xml->xml_init_sqljoins($tabObjRet->sql);
 			echo $this->xml->xml_parse_join();

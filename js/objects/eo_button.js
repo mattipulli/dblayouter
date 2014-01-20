@@ -47,8 +47,8 @@ EOButton.prototype={
 	},
 	
 	setData:function(data){
-		$(this.objEdit).find("button").each(function(){$(this).val(data);});
-		$(this.objStatic).find("button").each(function(){$(this).val(data);});
+		$(this.objEdit).find("input").each(function(){$(this).val(data);});
+		$(this.objStatic).find("input").each(function(){$(this).val(data);});
 	},
 
 	setRowData:function(data){

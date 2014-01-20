@@ -15,6 +15,7 @@ ControllerLayout.prototype={
 	},
 	
 	controller_get_layout_list:function(){
+		$("#layout_names_select").html("");
 		var variables=new Object();
 		variables["type"]=13;
 		this.ajax.ajaxPost(variables, function(data){
@@ -23,7 +24,7 @@ ControllerLayout.prototype={
 				if(layouts[i] !== undefined){
 					$("#layout_names_select").html( $("#layout_names_select").html() + "<option data-listtype='layout' value='"+layouts[i].layout_id+"'>"+layouts[i].layout_name+"</option>" );
 					for(var j=0; j<layouts[i].layout_tab_arr.length; j++){
-						$("#layout_names_select").html( $("#layout_names_select").html() + "<option data-listtype='tab' data-layout='"+layouts[i].layout_id+"' style='color:rgb(100,100,150)' value='"+layouts[i].layout_tab_arr[j].tab_id+"'>-"+layouts[i].layout_tab_arr[j].tab_name+":"+layouts[i].layout_tab_arr[j].tab_type+"</option>" );
+						$("#layout_names_select").html( $("#layout_names_select").html() + "<option data-tabtype='"+layouts[i].layout_tab_arr[j].tab_type+"' data-listtype='tab' data-layout='"+layouts[i].layout_id+"' style='color:rgb(100,100,150)' value='"+layouts[i].layout_tab_arr[j].tab_id+"'>-"+layouts[i].layout_tab_arr[j].tab_name+":"+layouts[i].layout_tab_arr[j].tab_type+"</option>" );
 					}
 				}
 			}
