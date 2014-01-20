@@ -4,6 +4,10 @@ function ControllerTab(){
 }
 
 ControllerTab.prototype={
+  
+	controller_tab_set_row:function(){
+		current_tab.setRow();
+	},
 
 	controller_next:function(){
 		current_tab.row++;
@@ -105,12 +109,48 @@ ControllerTab.prototype={
 		});
 	},
 
+	controller_change_object_data_textboxarea:function(){
+		$("#object_data_header").html("Textbox/Textarea");
+		$("#object_data_div").html("<div style ='width:100%'><span>Column: </span><input id='object_column_changed' type='text' class='kentta' /></div>");
+		$( "#button_change_object_data" ).click(function() {
+			ui_close_dialog();
+			editor_size_obj.setData("", $("#object_column_changed").val(), 1);
+		});
+	},
+
+	controller_change_object_data_button:function(){
+		$("#object_data_header").html("Button");
+		$("#object_data_div").html("<div style ='width:100%'><span>Caption: </span><input id='object_data_changed' type='text' class='kentta' /></div>");
+		$( "#button_change_object_data" ).click(function() {
+			ui_close_dialog();
+			editor_size_obj.setData($("#object_data_changed").val(), "", 0);
+		});
+	},
+
+	controller_change_object_data_submit:function(){
+		$("#object_data_header").html("Submit");
+		$("#object_data_div").html("<div style ='width:100%'><span>Caption:</span><input id='object_data_changed' type='text' class='kentta'/></div>");
+		$( "#button_change_object_data" ).click(function() {
+			ui_close_dialog();
+			editor_size_obj.setData($("#object_data_changed").val(), "", 0);
+		});
+	},
+
 	controller_change_object_data_type:function(){
 		if(editor_size_obj.type === "text"){
 			this.controller_change_object_data_text();
 		}
 		if(editor_size_obj.type === "image"){
 			this.controller_change_object_data_img();
+		}
+		if(editor_size_obj.type === "textbox" || editor_size_obj.type==="textarea"){
+			this.controller_change_object_data_textboxarea();
+		}
+		if(editor_size_obj.type === "button"){
+			this.controller_change_object_data_button();
+		}
+		if(editor_size_obj.type === "submit"){
+			this.controller_change_object_data_submit();
 		}
 	},
 	
@@ -135,12 +175,28 @@ ControllerTab.prototype={
 
 	controller_tab_select_search_tools:function(){
 		ui_menubar_tools('#layout_ui_tools_more');
-		$("#layout_ui_tools_more").html("");
+		var html_a="<p class='tooler' onclick='ui_menubar_close();'>Searchbox</p>";
+		html_a=html_a+"<p class='tooler' onclick='ui_menubar_close();'>Searcharea</p>";
+		html_a=html_a+"<p class='tooler' onclick='ui_menubar_close();'>Searchsubmit</p>";
+		html_a=html_a+"<p class='tooler' onclick='ui_menubar_close();'>Searchresults</p>";
+		$("#layout_ui_tools_more").html(html_a);
 	},
 
 	controller_tab_select_moduls:function(){
 		ui_menubar_tools('#layout_ui_tools_more');
 		$("#layout_ui_tools_more").html("No moduls...");
+	},
+	
+	controller_tab_set_maintain_table:function(){
+		var maintain_table=$("#layout_manage_maintain_table_name").val();
+		var xml="<?xml version='1.0' ?><sqljoins><maintaintable name='"+maintain_table+"' /></sqljoins>"
+		var variables=new Object();
+		variables["tab_id"]=layout_manage_current_id;
+		variables["type"]=19;
+		variables["sql_xml"]=xml;
+		this.ajax.ajaxPost(variables, function(data){
+			alert(data);
+		});
 	}
 }
 

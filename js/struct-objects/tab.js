@@ -27,6 +27,36 @@ Tab.prototype={
 		this.getStyles();
 	},
 	
+	setRowGetXML:function(){
+		var xml="<?xml version='1.0' ?><row>";
+		for(var i=0; i<this.object_arr.length; i++){
+		    if(this.object_arr[i].type==="textbox" || this.object_arr[i].type==="textarea"){
+		      var object_a=this.object_arr[i];
+		      var object_column=this.object_arr[i].column;
+		      var object_data="";
+		      if(object_a.type==="textbox"){
+			$(object_a.object.objStatic).find("input").each(function(){object_data=$(this).val();});
+		      }
+		      if(object_a.type==="textarea"){
+			$(object_a.object.objStatic).find("textarea").each(function(){object_data=$(this).val();});
+		      }
+		      xml=xml+"<columndata column='"+object_column+"' data='"+object_data+"' />";
+		    }
+		}
+		xml=xml+"</row>";
+		return xml;
+	},
+	
+	setRow:function(){
+	  	var variables=new Object();
+		variables["type"]=25;
+		variables["tab_id"]=this.tab_id;
+		variables["row"]=this.row;
+		variables["xml"]=this.setRowGetXML();
+		this.ajax.ajaxPost(variables, function(data){
+		});    
+	},
+	
 	getRow:function(){
 		var variables=new Object();
 		variables["type"]=24;
@@ -34,6 +64,7 @@ Tab.prototype={
 		variables["row"]=this.row;
 		var this_ref=this;
 		this.ajax.ajaxPost(variables, function(data){
+			//alert(data);
 			var rowdata=jQuery.parseJSON( data );	
 			this_ref.setRowData(rowdata[0]);
 		});

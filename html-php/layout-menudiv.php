@@ -50,6 +50,7 @@
 		<div style="width:30%;float:left;padding:5px;text-align:center">
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_new_tab_structure();">New tab</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_references.init();">Relationships</a>
+			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_maintain_table_structure();">Maintain table</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_change_name_tablayout_structure();">Change name</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_change_tab_type_structure();">Change type</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_destroy_tablayout_structure();">Destroy</a>
@@ -68,6 +69,18 @@
 		<div style="clear:both"></div>
 		<hr/>
 		<a href="#" style="" onclick="ui_close_dialog();controller.controller_layout.controller_change_name_layout();" class="nappi6">Change</a>
+		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
+	</div>
+	</div>
+	
+	<div class="pimennys_child" id="pimennys_layout_maintain_table">
+	<div class="ui_bar"><p class="tit">Maintain table</p>
+	<div style="clear:both"></div></div>
+	<div class="inds">
+		<span>Table name: </span><input class="kentta" id="layout_manage_maintain_table_name" style="width:450px;" type="text"/>
+		<div style="clear:both"></div>
+		<hr/>
+		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_tab_set_maintain_table();" class="nappi6">Change</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>

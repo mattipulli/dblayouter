@@ -43,12 +43,16 @@ EOSubmit.prototype={
 		$(divObj).append(submitObj);
 		submitObj.style.width="100%";
 		submitObj.style.height="100%";
+		$(submitObj).click(function(){
+			controller.controller_tab.controller_tab_set_row();
+		}	
+		);
 		this.objStatic=divObj;
 	},
 	
 	setData:function(data){
-		$(this.objEdit).find("button").each(function(){$(this).val(data);});
-		$(this.objStatic).find("button").each(function(){$(this).val(data);});
+		$(this.objEdit).find("input").each(function(){$(this).val(data);});
+		$(this.objStatic).find("input").each(function(){$(this).val(data);});
 	},
 
 	setRowData:function(data){

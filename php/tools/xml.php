@@ -5,14 +5,20 @@ require_once(dirname(__FILE__)."/../structs/eobject.php");
 require_once(dirname(__FILE__)."/../structs/tabstyle.php");
 require_once(dirname(__FILE__)."/../tools/topological_sort.php");
 require_once(dirname(__FILE__)."/../structs/graph_node.php");
+require_once(dirname(__FILE__)."/../structs/row_column.php");
 
 class Xml{
 
 	public $xmlsqljoins;
 	public $xmltab;
+	public $xmlrowdata;
 
 	function xml_init_sqljoins($xmlstr){
 		$this->xmlsqljoins = new SimpleXMLElement($xmlstr);
+	}
+	
+	function xml_parse_maintain_table(){
+		return (string)$this->xmlsqljoins->maintaintable[0]["name"];
 	}
 	
 	function xml_parse_join(){
@@ -85,6 +91,23 @@ class Xml{
 			$obj_list[]=$objObj;
 		}
 		return $obj_list;
+	}
+	
+	function xml_init_rowdata($xmlstr){
+		$this->xmlrowdata = new SimpleXMLElement($xmlstr);
+	}
+	
+	function xml_parse_row_data(){
+		$rowcolumn_list=array();
+		foreach($this->xmlrowdata->columndata as $columndata ){
+			$column=(string)$columndata["column"];
+			$data=(string)$columndata["data"];
+			$rowcolumnObj=new RowColumn;
+			$rowcolumnObj->column=$column;
+			$rowcolumnObj->rowdata=$data;
+			$rowcolumn_list[]=$rowcolumnObj;
+		}
+		return $rowcolumn_list;
 	}
 
 }

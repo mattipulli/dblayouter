@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../structs/searchterm.php");
 require_once(dirname(__FILE__)."/../database/db.php");
 require_once(dirname(__FILE__)."/../tools/hash.php");
 require_once(dirname(__FILE__)."/../tools/xml.php");
-
+require_once(dirname(__FILE__)."/../structs/row_column.php");
 
 class DB{
 	private $db_connection;
@@ -365,8 +365,25 @@ class DB{
 	
 	//ROW
 	
-	function db_row_add_row($row){
+	function db_row_set_row($row){
+		$rowObj=new Row;
+		$rowObj=$row;
+		$ret_object=$this->db_select("SELECT count(*) AS count FROM ".$rowObj->table_name);
+		if($ret_object[0]["count"]>=$rowObj->row){
+			$this->db_row_update_row($rowObj);
+			echo '<';
+		}
+		else if($ret_object[0]["count"]<$rowObj->row){
+			$rowObj->row=$ret_object[0]["count"]+1;
+			$this->db_row_add_row($rowObj);
+			$this->db_row_update_row($rowObj);
+		}
+	}
 	
+	function db_row_add_row($row){
+		 $rowObj=new Row;
+		 $rowObj=$row;
+		 $this->db_exec("INSERT INTO ".$rowObj->table_name." (id_".$rowObj->table_name.") VALUES (NULL);");
 	}
 	
 	function db_row_get_row($row){
@@ -376,8 +393,33 @@ class DB{
 		return $ret_object;
 	}
 	
-	function db_row_update_row($row, $new_row){
+	function db_row_set_sql_construct($data){
+		$setsql="";
+		
+		for($i=0; $i<count($data); $i++){
+			$setsql=$setsql." ".$data[$i]->column."='".$data[$i]->rowdata."' ";
+			if($i<count($data)-1){
+				$setsql=$setsql.",";
+			}
+		}
+		
+		return $setsql;
+	}
 	
+	function db_row_get_id($row){
+		$rowObj=new Row;
+		$rowObj=$row;
+		$ret_object=$this->db_select("SELECT id_".$rowObj->table_name." AS id FROM ".$rowObj->table_name." LIMIT ".($rowObj->row-1).",1;");
+		return $ret_object[0]["id"];
+	}
+	
+	function db_row_update_row($row){
+		$rowObj=new Row;
+		$rowObj=$row;
+		$setSQL=$this->db_row_set_sql_construct($rowObj->data);
+		$setRow=$this->db_row_get_id($rowObj);
+		echo "UPDATE ".$rowObj->table_name." SET ".$setSQL." WHERE id_".$rowObj->table_name."=".$setRow.";";
+		$this->db_exec("UPDATE ".$rowObj->table_name." SET ".$setSQL." WHERE id_".$rowObj->table_name."=".$setRow.";");
 	}
 	
 	function db_row_destroy_row($row){

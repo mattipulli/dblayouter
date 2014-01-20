@@ -64,6 +64,18 @@ Controller.prototype={
 			this_ref.controller_load_layouts();
 		});
 	},
+	
+	controller_maintain_table_structure:function(){
+	  	var type=$("#layout_names_select option:selected").data("listtype");
+		layout_manage_current_id=$("#layout_names_select option:selected").val();
+
+		if(type==="tab"){
+			if($("#layout_names_select option:selected").data("tabtype") == 2 ){
+				ui_close_dialog();
+				ui_open_dialog('#pimennys_layout_maintain_table');
+			}
+		}
+	},
 
 	controller_change_name_database_structure:function(){
 		var type=$("#table_names_select option:selected").data("listtype");
