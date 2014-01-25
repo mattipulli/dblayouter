@@ -276,6 +276,17 @@ class HandlePost{
 		}
 		
 		///////////
+		
+		//SEARCH
+		
+		if( $type == 26 ){
+			$tab_id=$_POST['tab_id'];
+			$xml=$_POST['xml'];
+			$this->controller->controller_init_search();
+			$this->controller->controller_search->controller_search($tab_id, $xml);
+		}
+		
+		///////////
 	}
 
 }

@@ -63,6 +63,7 @@ class Controller{
 	function controller_init_search(){
 		$this->controller_search=new ControllerSearch;
 		$this->controller_search->DB=$this->DB;
+		$this->controller_search->xml=$this->xml;
 	}
 	
 	function controller_init_tab(){

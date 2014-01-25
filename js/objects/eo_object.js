@@ -55,6 +55,21 @@ EOObject.prototype={
 		if(type==="submit"){
 			this.object=new EOSubmit(this.x, this.y, this.w, this.h);
 		}
+		if(type==="searchbox"){
+			this.object=new EOSearchbox(this.x, this.y, this.w, this.h);
+		}
+		if(type==="searcharea"){
+			this.object=new EOSearcharea(this.x, this.y, this.w, this.h);
+		}
+		if(type==="searchsubmit"){
+			this.object=new EOSearchsubmit(this.x, this.y, this.w, this.h);
+		}
+		if(type==="searchresults"){
+			this.object=new EOSearchresults(this.x, this.y, this.w, this.h);
+		}
+		if(type==="canvas"){
+			this.object=new EOCanvas(this.x, this.y, this.w, this.h);
+		}
 	},
 	
 	setData:function(data, column, column_on){

@@ -27,6 +27,26 @@ Tab.prototype={
 		this.getStyles();
 	},
 	
+	setSearchTermsXML:function(){
+		var xml="<?xml version='1.0' ?><row>";
+		for(var i=0; i<this.object_arr.length; i++){
+		    if(this.object_arr[i].type==="searchbox" || this.object_arr[i].type==="searcharea"){
+		      var object_a=this.object_arr[i];
+		      var object_column=this.object_arr[i].column;
+		      var object_data="";
+		      if(object_a.type==="searchbox"){
+			$(object_a.object.objStatic).find("input").each(function(){object_data=$(this).val();});
+		      }
+		      if(object_a.type==="searcharea"){
+			$(object_a.object.objStatic).find("textarea").each(function(){object_data=$(this).val();});
+		      }
+		      xml=xml+"<columndata column='"+object_column+"' data='"+object_data+"' />";
+		    }
+		}
+		xml=xml+"</row>";
+		return xml;
+	},
+	
 	setRowGetXML:function(){
 		var xml="<?xml version='1.0' ?><row>";
 		for(var i=0; i<this.object_arr.length; i++){
@@ -55,6 +75,55 @@ Tab.prototype={
 		variables["xml"]=this.setRowGetXML();
 		this.ajax.ajaxPost(variables, function(data){
 		});    
+	},
+	
+	search:function(){
+		var this_ref=this;
+		var variables=new Object();
+		variables["type"]=26;
+		variables["tab_id"]=this.tab_id;
+		variables["xml"]=this.setSearchTermsXML();
+		this.ajax.ajaxPost(variables, function(data){
+			alert(data);
+			var searchdata=jQuery.parseJSON( data );	
+			this_ref.createSearchResults(searchdata);
+		});    
+	},
+	
+	createSearchResultsTable:function(data){
+		var columns=Object.keys(data[0]).length;
+		var columns_arr=Object.keys(data[0]);
+		alert(columns_arr);
+		var table_str="<table style='width:100%'>";
+		table_str=table_str+"<tr>";
+		for(var k=0; k<columns_arr.length; k++){
+			  	if(isNaN(columns_arr[k])){
+					table_str=table_str+"<td><span>"+columns_arr[k]+"</span></td>";
+				}
+			}
+		table_str=table_str+"</tr>";
+		for(var i=0; i<data.length; i++){
+			table_str=table_str+"<tr>";
+			for(var j=0; j<columns; j++){
+					if(!isNaN(columns_arr[j])){
+						table_str=table_str+"<td><span>"+data[i][columns_arr[j]]+"</span></td>";
+					}
+			}
+			table_str=table_str+"</tr>";
+		}
+		table_str=table_str+"</table>";
+		//alert(table_str);
+		return table_str; 
+	},
+	
+	createSearchResults:function(data){
+		
+		for(var i=0; i<this.object_arr.length; i++){
+			if(this.object_arr[i].type==="searchresults"){
+				this.object_arr[i].data=this.createSearchResultsTable(data);
+				this.object_arr[i].setRowData();
+			}
+		}
 	},
 	
 	getRow:function(){
@@ -163,6 +232,9 @@ Tab.prototype={
 				var column_on=this.object_arr[i].column_on;
 				var type=this.object_arr[i].type;
 				var column=this.object_arr[i].column;
+				if(type==="searchresults"){
+					data="";
+				}
 				xml=xml+"<object x='"+x+"' y='"+y+"' w='"+w+"' h='"+h+"' type='"+type+"' column='"+column+"' column_on='"+column_on+"' data='"+data+"'>"+style+"</object>";
 			}
 		}
@@ -180,6 +252,7 @@ Tab.prototype={
 		variables["tab_id"]=this.tab_id;
 		var this_ref=this;
 		this.ajax.ajaxPost(variables, function(data){
+			alert(data);
 			var objects=jQuery.parseJSON( data );	
 			for(var i=0; i<objects.length; i++){
 				var object=new EOObject(objects[i].type, objects[i].x, objects[i].y, objects[i].w, objects[i].h, objects[i].style, objects[i].data, objects[i].column, objects[i].column_on);
@@ -232,6 +305,7 @@ Tab.prototype={
 		for(var i=0; i<this.object_arr.length; i++){
 			var robj=this.object_arr[i];
 			if(robj.column_on==1 || robj.column_on==true || robj.column_on==="true"){
+			  if(robj.type!=="searcharea" && robj.type!=="searchbox"){
 				if(row!==undefined){
 				if(row[""+robj.column]!==undefined){
 					robj.data=row[""+robj.column];
@@ -244,6 +318,7 @@ Tab.prototype={
 					robj.data="";
 					robj.setRowData();
 				}
+			  }
 			}
 		}
 	}

@@ -12,6 +12,11 @@
 <script src="js/ui/ui.js"></script>
 <script src="js/ui/mouse.js"></script>
 
+<script src="js/objects/eo_canvas.js"></script>
+<script src="js/objects/eo_searchsubmit.js"></script>
+<script src="js/objects/eo_searchbox.js"></script>
+<script src="js/objects/eo_searcharea.js"></script>
+<script src="js/objects/eo_searchresults.js"></script>
 <script src="js/objects/eo_submit.js"></script>
 <script src="js/objects/eo_button.js"></script>
 <script src="js/objects/eo_textarea.js"></script>
