@@ -4,6 +4,10 @@ function ControllerTab(){
 }
 
 ControllerTab.prototype={
+
+	controller_tab_search:function(){
+		current_tab.search();
+	},
   
 	controller_tab_set_row:function(){
 		current_tab.setRow();
@@ -143,13 +147,13 @@ ControllerTab.prototype={
 		if(editor_size_obj.type === "image"){
 			this.controller_change_object_data_img();
 		}
-		if(editor_size_obj.type === "textbox" || editor_size_obj.type==="textarea"){
+		if(editor_size_obj.type === "textbox" || editor_size_obj.type==="textarea" || editor_size_obj.type === "searchbox" || editor_size_obj.type==="searcharea"){
 			this.controller_change_object_data_textboxarea();
 		}
 		if(editor_size_obj.type === "button"){
 			this.controller_change_object_data_button();
 		}
-		if(editor_size_obj.type === "submit"){
+		if(editor_size_obj.type === "submit" || editor_size_obj.type === "searchsubmit"){
 			this.controller_change_object_data_submit();
 		}
 	},
@@ -175,10 +179,10 @@ ControllerTab.prototype={
 
 	controller_tab_select_search_tools:function(){
 		ui_menubar_tools('#layout_ui_tools_more');
-		var html_a="<p class='tooler' onclick='ui_menubar_close();'>Searchbox</p>";
-		html_a=html_a+"<p class='tooler' onclick='ui_menubar_close();'>Searcharea</p>";
-		html_a=html_a+"<p class='tooler' onclick='ui_menubar_close();'>Searchsubmit</p>";
-		html_a=html_a+"<p class='tooler' onclick='ui_menubar_close();'>Searchresults</p>";
+		var html_a="<p class='tooler' onclick='current_tab.editor.setType(\"searchbox\");ui_menubar_close();'>Searchbox</p>";
+		html_a=html_a+"<p class='tooler' onclick='current_tab.editor.setType(\"searcharea\");ui_menubar_close();'>Searcharea</p>";
+		html_a=html_a+"<p class='tooler' onclick='current_tab.editor.setType(\"searchsubmit\");ui_menubar_close();'>Searchsubmit</p>";
+		html_a=html_a+"<p class='tooler' onclick='current_tab.editor.setType(\"searchresults\");ui_menubar_close();'>Searchresults</p>";
 		$("#layout_ui_tools_more").html(html_a);
 	},
 

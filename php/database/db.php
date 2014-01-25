@@ -561,8 +561,11 @@ class DB{
 	
 	//SEARCH
 	
-	function db_search($searchterm, $tab){
-	
+	function db_search($searchterm){
+		$searchtermObj=new SearchTerm;
+		$searchtermObj=$searchterm;
+		$ret_object=$this->db_select($searchtermObj->search_term);
+		return $ret_object;
 	}
 	
 	////////

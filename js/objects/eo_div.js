@@ -36,6 +36,12 @@ EODiv.prototype={
 	
 	setData:function(data){
 	
+	},
+	
+	setRowData:function(data){
+	},
+
+	setColumn:function(column){	
 	}
 
 }
