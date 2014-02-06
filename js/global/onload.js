@@ -19,10 +19,23 @@ function main_do_onload(){
 			$('#colorSelector div').css('backgroundColor', '#' + hex);
 		}
 	});
+	
+	$(function() {
+		$( "#slider" ).slider({
+			range: "max",
+			min: 1,
+			max: 0,
+			value: 1,
+			slide: function( event, ui ) {
+			$( "#rowcount" ).val( ui.value );
+			}
+			});
+	});
+
+	$("#db_title").css("margin-left", -$("#db_title").width()/2);
 }
 
 function main_do_onclick(){
-
 }
 
 function main_do_onresize(){

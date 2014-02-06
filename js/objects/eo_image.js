@@ -12,7 +12,7 @@ EOImage.prototype={
 
 	createEdit:function(){
 		var divObj=document.createElement("div");
-		var imgObj=document.createElement("img");
+		var imgObj=document.createElement("div");
 		divObj.class="ui-widget-content";
 		divObj.style.cursor="pointer";
 		divObj.style.top=this.y+"px";
@@ -30,14 +30,12 @@ EOImage.prototype={
 	
 	createStatic:function(){
 		var divObj=document.createElement("div");
-		var imgObj=document.createElement("img");
+		var imgObj=document.createElement("div");
 		divObj.style.top=this.y+"px";
 		divObj.style.left=this.x+"px";
 		divObj.style.width=this.w+"px";
 		divObj.style.height=this.h+"px";
 		divObj.style.position="absolute";
-		divObj.style.borderStyle="dotted";
-		divObj.style.borderWidth="1px";
 		$(divObj).append(imgObj);
 		imgObj.style.width="100%";
 		imgObj.style.height="100%";
@@ -45,7 +43,20 @@ EOImage.prototype={
 	},
 	
 	setData:function(data){
-	
+		$(this.objEdit).find("div").each(function(){$(this).css("background-image","url("+data+")");});
+		$(this.objEdit).find("div").each(function(){$(this).css("background-repeat","no-repeat");});
+		$(this.objStatic).find("div").each(function(){$(this).css("background-image","url("+data+")");});
+		$(this.objStatic).find("div").each(function(){$(this).css("background-repeat","no-repeat");});
+	},
+
+	setRowData:function(data){
+		//alert(data);
+		$(this.objStatic).find("div").each(function(){$(this).css("background-image","url("+data+")");});
+		$(this.objStatic).find("div").each(function(){$(this).css("background-repeat","no-repeat");});
+	},
+
+	setColumn:function(column){	
+		//$(this.objEdit).find("img").each(function(){$(this).val("[column:"+column+"]");});
 	}
 
 }

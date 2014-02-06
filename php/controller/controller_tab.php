@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__)."/../structs/tab.php");
+require_once(dirname(__FILE__)."/../structs/graphics_object.php");
 
 class ControllerTab{
 	
@@ -62,7 +63,7 @@ class ControllerTab{
 			$tabObj=new Tab;
 			$tabObj->tab_id=$tab_id;
 			$tabObj->sql=$tab_sql;
-			$this->DB->db_tab_destroy_tab($tabObj);
+			$this->DB->db_tab_change_sql($tabObj);
 			echo 'Success!';
 		}else{
 			echo 'Error!';
@@ -110,6 +111,27 @@ class ControllerTab{
 			}
 		}else{
 			echo 'Error!';
+		}
+	}
+	
+	function controller_tab_parse_graphics_xml($xml){
+		if($xml!=NULL){
+			$this->xml->xml_init_graphics($xml);
+			echo $this->xml->xml_parse_graphics();
+		}
+	}
+	
+	function controller_tab_parse_results_changes_xml($xml){
+		if($xml!=NULL){
+			$this->xml->xml_init_result_changes($xml);
+			echo $this->xml->xml_parse_result_changes();
+		}
+	}
+	
+	function controller_tab_parse_diagram_labels_xml($xml){
+		if($xml!=NULL){
+			$this->xml->xml_init_diagram_labels($xml);
+			echo $this->xml->xml_parse_diagram_labels();
 		}
 	}
 	

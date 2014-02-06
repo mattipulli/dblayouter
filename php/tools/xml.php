@@ -6,19 +6,74 @@ require_once(dirname(__FILE__)."/../structs/tabstyle.php");
 require_once(dirname(__FILE__)."/../tools/topological_sort.php");
 require_once(dirname(__FILE__)."/../structs/graph_node.php");
 require_once(dirname(__FILE__)."/../structs/row_column.php");
+require_once(dirname(__FILE__)."/../structs/graphics_object.php");
+require_once(dirname(__FILE__)."/../structs/result_changes.php");
+require_once(dirname(__FILE__)."/../structs/diagram_label.php");
 
 class Xml{
 
 	public $xmlsqljoins;
 	public $xmltab;
 	public $xmlrowdata;
+	public $xmlgraphics;
+	public $xmlchanges;
+	public $xmldiagram;
+	
+	function xml_init_diagram_labels($xmlstr){
+		$this->xmldiagram=new SimpleXMLElement($xmlstr);
+	}
+	
+	function xml_parse_diagram_labels(){
+		$labels_list=array();
+		$labels_list[]=array("title"=>(string)$this->xmldiagram->title[0]["title"]);
+		foreach($this->xmldiagram->label as $label){
+			$labelObj=new DiagramLabel;
+			$labelObj->label=(string)$label["label"];
+			$labelObj->data=(string)$label["data"];
+			$labelObj->column=(string)$label["column"];
+			$labels_list[]=$labelObj;
+		}
+		return json_encode($labels_list);
+	}
+	
+	function xml_init_result_changes($xmlstr){
+		$this->xmlchanges=new SimpleXMLElement($xmlstr);
+	}
+	
+	function xml_parse_result_changes(){
+		$changes_list=array();
+		foreach($this->xmlchanges->change as $change){
+			$changeObj=new ResultChanges;
+			$changeObj->from=(string)$change["from"];
+			$changeObj->to=(string)$change["to"];
+			$changes_list[]=$changeObj;
+		}
+		return json_encode($changes_list);
+	}
+	
+	function xml_init_graphics($xmlstr){
+		$this->xmlgraphics = new SimpleXMLElement($xmlstr);
+	}
+	
+	function xml_parse_graphics(){
+		$graphics_list=array();
+		foreach ($this->xmlgraphics->object as $object) {
+			$graphicsObj=new GraphicsObject;
+			$graphicsObj->type=(string)$object["type"];
+			$graphicsObj->x=(string)$object["x"];
+			$graphicsObj->y=(string)$object["y"];
+			$graphicsObj->w=(string)$object["w"];
+			$graphicsObj->h=(string)$object["h"];
+			$graphicsObj->x2=(string)$object["x2"];
+			$graphicsObj->y2=(string)$object["y2"];
+			$graphicsObj->r=(string)$object["r"];
+			$graphics_list[]=$graphicsObj;
+		}
+		return json_encode($graphics_list);
+	}
 
 	function xml_init_sqljoins($xmlstr){
 		$this->xmlsqljoins = new SimpleXMLElement($xmlstr);
-	}
-	
-	function xml_parse_maintain_table(){
-		return (string)$this->xmlsqljoins->maintaintable[0]["name"];
 	}
 	
 	function xml_parse_join(){
@@ -73,7 +128,7 @@ class Xml{
 			$objObj->w=(string)$object["w"];
 			$objObj->h=(string)$object["h"];
 			$objObj->type=(string)$object["type"];
-			$objObj->style=(string)$this->xml_parse_tab_objects_object($object);
+			$objObj->style=(string)$object["style"];
 			$objObj->data=(string)$object["data"];
 			$objObj->column=(string)$object["column"];
 			$objObj->column_on=(string)$object["column_on"];

@@ -46,16 +46,32 @@ class ControllerSearch{
 			
 			$tabRet=$this->DB->db_tab_get($tabObj);
 			if($tabRet->tab_type==0){
+				/*$this->xml->xml_init_sqljoins($tabRet->sql);
+				$joins=$this->xml->xml_parse_join_no_json();*/
+				
 				$this->xml->xml_init_sqljoins($tabRet->sql);
 				$joins=$this->xml->xml_parse_join_no_json();
-				$this->xml->xml_init_rowdata($xml);
-				$where=$this->xml->xml_parse_row_data();
+			
+				if(count($joins)==1){
+					$this->xml->xml_init_rowdata($xml);
+					$where=$this->xml->xml_parse_row_data();
+					
+					$searchtermObj=new SearchTerm;
+					$searchtermObj->search_term="SELECT * FROM ".$joins[0]->table1." WHERE ".$this->sql_where_construct($where);
+					
+					$ret_object=$this->DB->db_search($searchtermObj);
+					echo json_encode($ret_object);
+				}else{	
+					$this->xml->xml_init_rowdata($xml);
+					$where=$this->xml->xml_parse_row_data();
+					
+					$searchtermObj=new SearchTerm;
+					$searchtermObj->search_term=$this->row_topological_get_sql($joins)." WHERE ".$this->sql_where_construct($where);
+					
+					$ret_object=$this->DB->db_search($searchtermObj);
+					echo json_encode($ret_object);
+				}
 				
-				$searchtermObj=new SearchTerm;
-				$searchtermObj->search_term=$this->row_topological_get_sql($joins)." WHERE ".$this->sql_where_construct($where);
-				
-				$ret_object=$this->DB->db_search($searchtermObj);
-				echo json_encode($ret_object);
 				//echo $searchtermObj->search_term;
 			}
 		}else{

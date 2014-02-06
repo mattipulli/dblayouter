@@ -13,14 +13,14 @@
 	</div>
 
 	<div class="pimennys_child" id="pimennys_style">
-	<div class="ui_bar"><p class="tit">Object properties</p>
+	<div class="ui_bar"><p class="tit">Object CSS</p>
 	<div style="clear:both"></div></div>
 	<div class="inds">
-		<div id="object_style_parameters">
-
+		<div style="width:100%">
+			CSS: <textarea id="object_style_css" style="width:100%;height:200px;resize:none"></textarea>
 		</div>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_change_object_style();" class="nappi6">Save</a>
+		<a href="#" style="" onclick="ui_close_dialog();controller.controller_objectdata.change_object_style();" class="nappi6">Save</a>
 		<a href="#" style="" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
@@ -38,7 +38,7 @@
 			</div>
 		</div>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_change_tab_style();" class="nappi6">Save properties</a>
+		<a href="#" style="" onclick="ui_close_dialog();controller.controller_objectdata.change_tab_style();" class="nappi6">Save properties</a>
 		<a href="#" style="" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>

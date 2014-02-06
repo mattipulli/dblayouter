@@ -17,7 +17,7 @@
 	<div class="inds">
 		<span>Layout name: </span><input class="kentta" id="layout_new_layout_name" style="width:420px;" type="text"/>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_layout.controller_new_layout();" class="nappi6">Create layout</a>
+		<a href="#" style="" onclick="controller.controller_layout.controller_new_layout();" class="nappi6">Create layout</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
@@ -26,7 +26,7 @@
 	<div class="ui_bar"><p class="tit">New tab</p>
 	<div style="clear:both"></div></div>
 	<div class="inds">
-		<span>Tab name: </span><input class="kentta" id="layout_new_tab_name" style="width:300px;" type="text"/>
+		<span>Tab name: </span><input class="kentta" id="layout_new_tab_name" style="width:250px;" type="text"/>
 		<span>Tab type: </span>
 			<select id="layout_new_tab_type">
 				<option value="-1">Type</option>
@@ -35,7 +35,7 @@
 				<option value="2">Maintenance</option>
 			</select>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_new_tab();" class="nappi6">Create tab</a>
+		<a href="#" style="" onclick="controller.controller_tab.controller_new_tab();" class="nappi6">Create tab</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
@@ -50,7 +50,7 @@
 		<div style="width:30%;float:left;padding:5px;text-align:center">
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_new_tab_structure();">New tab</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_references.init();">Relationships</a>
-			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_maintain_table_structure();">Maintain table</a>
+			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_tab_table_structure();">Table</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_change_name_tablayout_structure();">Change name</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_change_tab_type_structure();">Change type</a>
 			<a href="#" style="width:90%;margin-top:5px;" class="nappi6" onclick="controller.controller_destroy_tablayout_structure();">Destroy</a>
@@ -65,22 +65,23 @@
 	<div class="ui_bar"><p class="tit">Change name</p>
 	<div style="clear:both"></div></div>
 	<div class="inds">
-		<span>Layout name: </span><input class="kentta" id="layout_manage_new_layout_name" style="width:450px;" type="text"/>
+		<span>Layout name: </span><input class="kentta" id="layout_manage_new_layout_name" style="width:420px;" type="text"/>
 		<div style="clear:both"></div>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_layout.controller_change_name_layout();" class="nappi6">Change</a>
+		<a href="#" style="" onclick="controller.controller_layout.controller_change_name_layout();" class="nappi6">Change</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
 	
-	<div class="pimennys_child" id="pimennys_layout_maintain_table">
-	<div class="ui_bar"><p class="tit">Maintain table</p>
+	<div class="pimennys_child" id="pimennys_layout_table">
+	<div class="ui_bar"><p class="tit">Table</p>
 	<div style="clear:both"></div></div>
 	<div class="inds">
-		<span>Table name: </span><input class="kentta" id="layout_manage_maintain_table_name" style="width:450px;" type="text"/>
+		<span>Table: </span><br/>
+		<select class="selekt" style="width:100%;height:200px" size="100" id="tab_table"></select>
 		<div style="clear:both"></div>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_tab_set_maintain_table();" class="nappi6">Change</a>
+		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_tab_set_table();" class="nappi6">Set table</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
@@ -92,7 +93,7 @@
 		<span>Tab name: </span><input class="kentta" id="layout_manage_new_tab_name" style="width:420px;" type="text"/>
 		<div style="clear:both"></div>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_change_name_tab();" class="nappi6">Change</a>
+		<a href="#" style="" onclick="controller.controller_tab.controller_change_name_tab();" class="nappi6">Change</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
@@ -109,7 +110,7 @@
 				<option value="2">Maintenance</option>
 			</select>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_tab.controller_change_tab_type();" class="nappi6">Change</a>
+		<a href="#" style="" onclick="controller.controller_tab.controller_change_tab_type();" class="nappi6">Change</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
@@ -125,4 +126,17 @@
 		<div style="clear:both"></div>
 	</div>
 	</div>
+	
+	<div class="pimennys_child" id="pimennys_layout_destroy_tab">
+	<div class="ui_bar"><p class="tit">Destroy tab</p>
+	<div style="clear:both"></div></div>
+	<div class="inds">
+		Are you sure?
+		<hr/>
+		<a href="#" style="" class="nappi6" onclick="controller.controller_tab.controller_destroy_tab();">Destroy tab</a>
+		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
+		<div style="clear:both"></div>
+	</div>
+	</div>
+	
 	

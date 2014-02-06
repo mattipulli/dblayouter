@@ -6,9 +6,10 @@
 <title>DbLayouter</title>
 <link rel="stylesheet" type="text/css" href="./css/style.css">
 <link href="./bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
 <link rel="stylesheet" media="screen" type="text/css" href="js/colorpicker/css/colorpicker.css" />
 </head>
-<body onload="main_do_onload();" onresize="main_do_onresize();" onmouseup="main_do_onmouseup()" onmousemove="main_do_onmousemove(event)">
+<body onload="main_do_onload();" onclick="main_do_onclick()" onresize="main_do_onresize();" onmouseup="main_do_onmouseup()" onmousemove="main_do_onmousemove(event)">
 
 
 <div id="menubar">
@@ -25,7 +26,8 @@
 </div>
 
 <div id="layoutbar">
-<div style="margin:5px;font-size:12px;float:left;" ><span style="float:left;">Layout: </span><a href="#" id="current_layout" onclick="ui_menubar(this, '#layout_choose_layout');" class="alasveto"></a></div>
+<div style="margin:5px;font-size:12px;float:left;" ><span style="float:left;">Layout: </span>
+<a href="#" id="current_layout" onclick="ui_menubar(this, '#layout_choose_layout');" class="alasveto"></a></div>
 <div style="margin:5px;font-size:12px;float:left;"><span style="float:left;">Tab: </span><a href="#" id="current_tab" onclick="ui_menubar(this, '#layout_choose_tab')" class="alasveto"></a></div>
 </div>
 

@@ -11,6 +11,8 @@ var db_manage_current_id;
 var layout_manage_current_id;
 
 
+var copied_object;
+
 
 function objectEquals(x, y) {
     // if both are function
@@ -43,3 +45,28 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
+function urlencode(str) {
+return escape(str).replace('+', '%2B').replace('%20', '+').replace('*', '%2A').replace('/', '%2F').replace('@', '%40');
+}
+
+function urldecode(str) {
+return unescape(str.replace('+', ' '));
+} 
+
+function isInArray(arr, obj){
+		for(var i=0; i<arr.length; i++){
+			if(arr[i].from === obj){
+				return arr[i];
+			}
+		}
+		return -1;
+}
+
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
