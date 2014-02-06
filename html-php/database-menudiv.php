@@ -1,5 +1,5 @@
 
-<div class="pimennys_child" id="pimennys_db_properties">
+	<div class="pimennys_child" id="pimennys_db_properties">
 	<div class="ui_bar"><p class="tit">Database properties</p>
 	<div style="clear:both"></div></div>
 	<div class="inds">
@@ -10,6 +10,11 @@
 	<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
+	
+	
+	
+	
+	
 	
 	<div class="pimennys_child" id="pimennys_db_newtable">
 	<div class="ui_bar"><p class="tit">New table</p>
@@ -29,11 +34,19 @@
 		<div class="parameters" id="db_new_table_columns"></div>
 		
 		<hr/>
-		<a href="#" onclick="ui_close_dialog();controller.controller_table.controller_new_table_create();" onclick="ui_close_dialog();" class="nappi6">Create table</a>
-		<a href="#" onclick="ui_close_dialog();" class="nappi6">Empty</a>
+		<a href="#" onclick="controller.controller_table.controller_new_table_create();" onclick="ui_close_dialog();" class="nappi6">Create table</a>
+		<a href="#" onclick="controller.controller_table.controller_table_empty()" class="nappi6">Empty</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<div class="pimennys_child" id="pimennys_db_manage">
 	<div class="ui_bar"><p class="tit">Manage tables</p>
@@ -54,17 +67,34 @@
 		</div>
 	</div>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<div class="pimennys_child" id="pimennys_db_manage_name_table">
 	<div class="ui_bar"><p class="tit">Change name</p>
 	<div style="clear:both"></div></div>
 	<div class="inds">
-		<span>Table name: </span><input class="kentta" id="db_manage_new_table_name" style="width:450px;" type="text"/>
+		<span>Table name: </span><input class="kentta" id="db_manage_new_table_name" style="width:400px;" type="text"/>
 		<div style="clear:both"></div>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_table.controller_change_name_table();" class="nappi6">Change</a>
+		<a href="#" style="" onclick="controller.controller_table.controller_change_name_table();" class="nappi6">Change</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<div class="pimennys_child" id="pimennys_db_manage_name_column">
 	<div class="ui_bar"><p class="tit">Change name</p>
@@ -77,6 +107,16 @@
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<div class="pimennys_child" id="pimennys_db_manage_type">
 	<div class="ui_bar"><p class="tit">Change type</p>
@@ -97,6 +137,15 @@
 	</div>
 	</div>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<div class="pimennys_child" id="pimennys_db_destroy_table">
 	<div class="ui_bar"><p class="tit">Destroy table</p>
 	<div style="clear:both"></div></div>
@@ -108,6 +157,14 @@
 		<div style="clear:both"></div>
 	</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<div class="pimennys_child" id="pimennys_db_destroy_column">
 	<div class="ui_bar"><p class="tit">Destroy column</p>
@@ -121,12 +178,19 @@
 	</div>
 	</div>
 	
+	
+	
+	
+	
+	
+	
+	
 	<div class="pimennys_child" id="pimennys_db_add_column">
 	<div class="ui_bar"><p class="tit">Add column</p>
 	<div style="clear:both"></div></div>
 	<div class="inds">
 			<span>Column name:</span>
-			<input id="add_column_column_name" style="width:25%" type="text" />
+			<input id="add_column_column_name" class="kentta" style="width:25%" type="text" />
 			<select id="add_column_column_type">
 			<option value="-1">Type</option>
 			<option value="TEXT">TEXT</option>
@@ -136,7 +200,7 @@
 			</select>
 		<div style="clear:both"></div>
 		<hr/>
-		<a href="#" style="" onclick="ui_close_dialog();controller.controller_column.controller_add_column();" class="nappi6">Add</a>
+		<a href="#" style="" onclick="controller.controller_column.controller_add_column();" class="nappi6">Add</a>
 		<a href="#" onclick="ui_close_dialog();" class="nappi6">Close</a><br/>
 	</div>
 	</div>

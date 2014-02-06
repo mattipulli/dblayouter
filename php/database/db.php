@@ -28,6 +28,10 @@ class DB{
 	private $database;
 	private $settings;
 	
+	function clean_str($str){
+		return trim(preg_replace('/ +/', '', preg_replace('/[^A-Za-z0-9 ]/', '', urldecode(html_entity_decode(strip_tags($str))))));
+	}
+	
 	function db_set_database($database){
 		$this->database=$database;
 		$this->settings=new Settings;
@@ -105,6 +109,8 @@ class DB{
 		$return_string="id_".$table_name." int PRIMARY KEY AUTO_INCREMENT,";
 
 		for($i=0; $i<count($column_arr);$i++){
+			$column_arr[$i]->column_name=$this->clean_str($column_arr[$i]->column_name);
+			$column_arr[$i]->column_type=$this->clean_str($column_arr[$i]->column_type);
 			$return_string=$return_string." ".$column_arr[$i]->column_name. " ".$column_arr[$i]->column_type;
 			if($i<count($column_arr)-1){
 				$return_string=$return_string.",";
@@ -117,6 +123,7 @@ class DB{
 	function db_table_create_table($table){
 		$tableObj=new Table;
 		$tableObj=$table;
+		$tableObj->table_name=$this->clean_str($tableObj->table_name);
 		$this->db_exec("CREATE TABLE ".$tableObj->table_name." ( ".$this->create_table_column_string($tableObj->column_arr, $tableObj->table_name)." );");
 		$this->db_exec("INSERT INTO DBTable (id_table, table_name) VALUES ( NULL, '".$tableObj->table_name."' );");
 		$ret_object = $this->db_select("SELECT id_table FROM DBTable ORDER BY id_table DESC LIMIT 1;");
@@ -142,6 +149,8 @@ class DB{
 	function db_table_change_name($table, $new_table_name){
 		$tableObj=new Table;
 		$tableObj=$table;
+		$tableObj->table_name=$this->clean_str($tableObj->table_name);
+		$new_table_name=$this->clean_str($new_table_name);
 		
 		$hide_array=array(":id"=>$tableObj->table_id);
 		$ret_object = $this->db_select_esc("SELECT table_name FROM DBTable WHERE id_table=:id;", $hide_array);
@@ -184,7 +193,7 @@ class DB{
 	function db_layout_create_layout($layout){
 		$layoutObj=new Layout;
 		$layoutObj=$layout;
-		
+		$layoutObj->layout_name=$this->clean_str($layoutObj->layout_name);
 		$hide_array=array(":name"=>$layoutObj->layout_name);
 		$this->db_exec_esc("INSERT INTO DBLayout (id_layout, layout_name) VALUES (NULL, :name);", $hide_array);
 	}
@@ -201,7 +210,7 @@ class DB{
 	function db_layout_change_name($layout){
 		$layoutObj=new Layout;
 		$layoutObj=$layout;
-		
+		$layoutObj->layout_name=$this->clean_str($layoutObj->layout_name);
 		$hide_array=array(":id"=>$layoutObj->layout_id, ":name"=>$layoutObj->layout_name);
 		$this->db_exec_esc("UPDATE DBLayout SET layout_name=:name WHERE id_layout=:id", $hide_array);
 	}
@@ -214,18 +223,18 @@ class DB{
 		$ret_object=$this->db_select("SELECT * FROM DBLayout;");
 		$layout_list=array();
 		foreach ($ret_object as $layout)
-        {
-            $layout_name=$layout['layout_name'];
-			$layout_id=$layout["id_layout"];
-			
-            $layoutObj=new Layout;
-			$layoutObj->layout_name=$layout_name;
-			$layoutObj->layout_id=$layout_id;
-			
-			$layoutObj->layout_tab_arr=$this->db_tab_get_by_layout($layoutObj);
+		{
+		    $layout_name=$layout['layout_name'];
+				$layout_id=$layout["id_layout"];
+				
+		    $layoutObj=new Layout;
+				$layoutObj->layout_name=$layout_name;
+				$layoutObj->layout_id=$layout_id;
+				
+				$layoutObj->layout_tab_arr=$this->db_tab_get_by_layout($layoutObj);
 
-            array_push( $layout_list, (object)$layoutObj );
-        }
+		    array_push( $layout_list, (object)$layoutObj );
+		}
 		return $layout_list;
 	}
 	
@@ -236,6 +245,7 @@ class DB{
 	function db_tab_create_tab($tab){
 		$tabObj=new Tab;
 		$tabObj=$tab;
+		$tabObj->tab_name=$this->clean_str($tabObj->tab_name);
 		$hide_array=array(":tab_name"=>$tabObj->tab_name, ":tab_type"=>$tabObj->tab_type, ":id"=>$tabObj->layout_id, ":xml"=>$tabObj->xml, ":joins"=>$tabObj->sql);
 		$this->db_exec_esc("INSERT INTO DBTab (id_tab, id_layout, tab_name, tab_type, xml, sqljoins) VALUES (NULL, :id, :tab_name, :tab_type, :xml, :joins);", $hide_array);
 	}
@@ -243,23 +253,21 @@ class DB{
 	function db_tab_destroy_tab($tab){
 		$tabObj=new Tab;
 		$tabObj=$tab;
-		
-		$hide_array=array(":id"=>$tabObj->tab_id, ":sql"=>$tabObj->sql);
-		$this->db_exec_esc("UPDATE DBTab SET sqljoins=:sql WHERE id_tab=:id;", $hide_array);
+		$this->db_exec("DELETE FROM DBTab WHERE id_tab=".$tabObj->tab_id);
 	}
 	
 	function db_tab_change_sql($tab){
 		$tabObj=new Tab;
 		$tabObj=$tab;
 		
-		$hide_array=array(":id"=>$tabObj->tab_id, ":name"=>$tabObj->tab_name);
-		$this->db_exec_esc("UPDATE DBTab SET tab_name=:name WHERE id_tab=:id", $hide_array);
+		$hide_array=array(":id"=>$tabObj->tab_id, ":sql"=>$tabObj->sql);
+		$this->db_exec_esc("UPDATE DBTab SET sqljoins=:sql WHERE id_tab=:id;", $hide_array);
 	}
 	
 	function db_tab_change_name($tab){
 		$tabObj=new Tab;
 		$tabObj=$tab;
-		
+		$tabObj->tab_name=$this->clean_str($tabObj->tab_name);
 		$hide_array=array(":id"=>$tabObj->tab_id, ":name"=>$tabObj->tab_name);
 		$this->db_exec_esc("UPDATE DBTab SET tab_name=:name WHERE id_tab=:id", $hide_array);
 	}
@@ -423,7 +431,19 @@ class DB{
 	}
 	
 	function db_row_destroy_row($row){
+		$rowObj=new Row;
+		$rowObj=$row;
+		//echo "SELECT * FROM ".$rowObj->table_name." LIMIT ".($rowObj->row-1).",1;";
+		$ret_object=$this->db_select("SELECT * FROM ".$rowObj->table_name." ORDER BY id_".$rowObj->table_name." ASC LIMIT ".($rowObj->row-1).",1;");
+		$id=$ret_object[0]["id_".$rowObj->table_name];
+		$this->db_exec("DELETE FROM ".$rowObj->table_name." WHERE id_".$rowObj->table_name."='".$id."'");
+	}
 	
+	function db_row_count($row){
+		$rowObj=new Row;
+		$rowObj=$row;	
+		$ret_object=$this->db_select($rowObj->sql);
+		return count($ret_object);
 	}
 	
 	////////
@@ -431,13 +451,14 @@ class DB{
 	//COLUMN
 	
 	function db_column_create_column($column){
+		$column->column_name=$this->clean_str($column->column_name);
 		$hide_array=array(":id_table"=>$column->table_id, ":column_name"=>$column->column_name, ":column_type"=>$column->column_type);
 		$this->db_exec_esc("INSERT INTO DBColumn (id_column, id_table, column_name, column_type) VALUES (NULL, :id_table, :column_name, :column_type);", $hide_array);
 	}
 	
 	function db_column_add_column($column){
 		$columnObj=$column;
-	
+		$columnObj->column_name=$this->clean_str($columnObj->column_name);
 		$hide_array=array(":id"=>$columnObj->table_id);
 		$ret_object = $this->db_select_esc("SELECT table_name FROM DBTable WHERE id_table=:id;", $hide_array);		
 		$columnObj->table_name=$ret_object[0]['table_name'];

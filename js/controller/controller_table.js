@@ -6,14 +6,19 @@ function ControllerTable(){
 ControllerTable.prototype={
 
 	controller_new_table_create:function(){
-		var variables=new Object();
-		this.controller_new_table_get_column_names(variables);
-		this.controller_new_table_get_column_types(variables);
-		variables["table_name"]=$("#db_new_table_name").val();
-		variables["type"]=2;
-		this.ajax.ajaxPost(variables, function(data){
-			alert(data);
-		});
+		if($("#db_new_table_name").val().length>0){
+			var variables=new Object();
+			this.controller_new_table_get_column_names(variables);
+			this.controller_new_table_get_column_types(variables);
+			variables["table_name"]=$("#db_new_table_name").val();
+			variables["type"]=2;
+			this.ajax.ajaxPost(variables, function(data){
+				alert(data);
+				ui_close_dialog();
+			});
+		}else{
+		      alert("Error!");
+		}
 	},
 	
 	controller_get_table_list:function(){
@@ -34,13 +39,16 @@ ControllerTable.prototype={
 	},
 	
 	controller_change_name_table:function(){
-		var variables=new Object();
-		variables["type"]=4;
-		variables["table_id"]=db_manage_current_id;
-		variables['table_name']=$("#db_manage_new_table_name").val();
-		this.ajax.ajaxPost(variables, function(data){
-			alert(data);
-		});
+		if($("#db_manage_new_table_name").val().length>0){
+			var variables=new Object();
+			variables["type"]=4;
+			variables["table_id"]=db_manage_current_id;
+			variables['table_name']=$("#db_manage_new_table_name").val();
+			this.ajax.ajaxPost(variables, function(data){
+				alert(data);
+				ui_close_dialog();
+			});
+		}
 	},
 	
 	controller_destroy_table:function(){
@@ -68,15 +76,27 @@ ControllerTable.prototype={
 	},
 
 	controller_new_table_get_column_names:function(arr){
+		arr["column_names"]="";
 		$('.column_name').each(function(){
-			arr["column_names"]=arr["column_names"]+","+$(this).val();
+			if($(this).val().length>0){
+				arr["column_names"]=arr["column_names"]+","+$(this).val();
+			}
 		});
 	},
 
 	controller_new_table_get_column_types:function(arr){
+		arr["column_types"]="";
 		$('.column_type').each(function(){
-			arr["column_types"]=arr["column_types"]+","+$(this).val();
+			if($(this).val().length>0){
+				arr["column_types"]=arr["column_types"]+","+$(this).val();
+			}
 		});
+	},
+	
+	controller_table_empty:function(){
+		$("#db_new_table_name").val("");
+		$("#db_new_table_column_count").val("");
+		$("#db_new_table_columns").html("");
 	}
 
 }

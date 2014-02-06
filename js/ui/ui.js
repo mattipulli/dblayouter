@@ -26,14 +26,14 @@ function ui_menubar_close(){
 
 
 function ui_menubar(id, valikko){
+		ui_menubar_close();
 		if(ui_menubar_is_open==0){
-			ui_menubar_close();
 			ui_menubar_open(id, valikko);
-			ui_menubar_is_open=0;
+			ui_menubar_is_open=1;
 		}else{
-			ui_menubar_close();
 			ui_menubar_is_open=0;
 		}
+		
 }
 
 function ui_menubar_open_rel(id, valikko,maindiv){
@@ -74,6 +74,8 @@ function ui_menubar_tools(valikko){
 			ui_menubar_is_open=0;
 		}
 }
+
+
 
 function ui_layout_adjust_height(){
 	var height_layout = document.getElementById('statusbar').offsetTop; 

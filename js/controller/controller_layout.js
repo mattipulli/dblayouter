@@ -6,12 +6,15 @@ function ControllerLayout(){
 ControllerLayout.prototype={
 
 	controller_new_layout:function(){
-		var variables=new Object();
-		variables["type"]=10;
-		variables["layout_name"]=$("#layout_new_layout_name").val();
-		this.ajax.ajaxPost(variables, function(data){
-			alert(data);
-		});
+		if($("#layout_new_layout_name").val().length>0){
+			var variables=new Object();
+			variables["type"]=10;
+			variables["layout_name"]=$("#layout_new_layout_name").val();
+			this.ajax.ajaxPost(variables, function(data){
+				alert(data);
+				ui_close_dialog();
+			});
+		}
 	},
 	
 	controller_get_layout_list:function(){
@@ -33,13 +36,16 @@ ControllerLayout.prototype={
 	},
 	
 	controller_change_name_layout:function(){
-		var variables=new Object();
-		variables["type"]=14;
-		variables["layout_id"]=layout_manage_current_id;
-		variables["new_layout_name"]=$("#layout_manage_new_layout_name").val();
-		this.ajax.ajaxPost(variables, function(data){
-			alert(data);
-		});	
+		if($("#layout_manage_new_layout_name").val().length>0){
+			var variables=new Object();
+			variables["type"]=14;
+			variables["layout_id"]=layout_manage_current_id;
+			variables["new_layout_name"]=$("#layout_manage_new_layout_name").val();
+			this.ajax.ajaxPost(variables, function(data){
+				alert(data);
+				ui_close_dialog();
+			});	
+		}
 	},
 	
 	controller_destroy_layout:function(){

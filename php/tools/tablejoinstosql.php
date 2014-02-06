@@ -26,11 +26,11 @@ class TableJoinsToSQL{
 	}
 	
 	function iterate(){
-		$whole_sql="SELECT * FROM ".$this->sorted_list[0]->name." ";
+		$whole_sql="SELECT * FROM ".$this->sorted_list[0]->name."";
 		for($i=0; $i<count($this->sorted_list); $i++){
 			$whole_sql=$whole_sql.$this->create_join($this->sorted_list[$i]);
 		}
-		return $whole_sql;
+		return $whole_sql." ORDER BY id_".$this->sorted_list[0]->name." ASC ";
 	}
 	
 }

@@ -287,6 +287,57 @@ class HandlePost{
 		}
 		
 		///////////
+		
+		//PARSE GRAPHICS XML
+		
+		if( $type == 27 ){
+			$xml=$_POST['xml'];
+			$this->controller->controller_init_tab();
+			$this->controller->controller_tab->controller_tab_parse_graphics_xml($xml);
+		}
+		
+		///////////
+		
+		//PARSE RESULTS CHANGES XML
+		
+		if( $type == 28 ){
+			$xml=$_POST['xml'];
+			$this->controller->controller_init_tab();
+			$this->controller->controller_tab->controller_tab_parse_results_changes_xml($xml);
+		}
+		
+		///////////
+		
+		//PARSE DIAGRAM LABELS XML
+		
+		if( $type == 29 ){
+			$xml=$_POST['xml'];
+			$this->controller->controller_init_tab();
+			$this->controller->controller_tab->controller_tab_parse_diagram_labels_xml($xml);
+		}
+		
+		///////////
+		
+		//ROW COUNT
+		
+		if( $type == 30 ){
+			$tab_id=$_POST['tab_id'];
+			$this->controller->controller_init_row();
+			$this->controller->controller_row->controller_row_get_count($tab_id);
+		}
+		
+		///////////
+		
+		//DELETE ROW
+		
+		if( $type == 31 ){
+			$tab_id=$_POST['tab_id'];
+			$row=$_POST['row'];
+			$this->controller->controller_init_row();
+			$this->controller->controller_row->controller_row_delete($tab_id, $row);
+		}
+		
+		///////////
 	}
 
 }

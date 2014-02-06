@@ -5,32 +5,50 @@ function EOObject(type, x, y, w, h, style, data, column, column_on){
 	this.y=y;
 	this.w=w;
 	this.h=h;
-	this.styles=new Array();
-	this.styles.concat(style);
 	this.data=data;
 	this.column=column;
 	this.column_on=column_on;
 	this.object;
 	this.sizediv=0;
+	this.style_pre="";
+	this.style_str=style;
 	this.createTypeObject(type);
 }
 
 EOObject.prototype={
+  
+  
+	setStyleEdit:function(){
+		var this_ref=this;
+		$(this.object.objEdit).children(":not(#sizer)").each(function(){this_ref.style_pre=$(this).attr("style");});
+		$(this.object.objEdit).children(":not(#sizer)").each(function(){$(this).attr("style", this_ref.style_pre+this_ref.style_str);});
+	},
+	
+	setStyleStatic:function(){
+		var this_ref=this;
+		$(this.object.objStatic).children(":not(#sizer)").each(function(){this_ref.style_pre=$(this).attr("style");});
+		$(this.object.objStatic).children(":not(#sizer)").each(function(){$(this).attr("style", this_ref.style_pre+this_ref.style_str);});
+	},
 	
 	goEdit:function(){
 		this.drawEdit();
+		this.setStyleEdit();
+
 	},
 	
 	goRecords:function(){
 		this.drawRecords();
+		this.setStyleStatic();
 	},
 	
 	goMaintenance:function(){
 		this.drawMaintenance();
+		this.setStyleStatic();
 	},
 	
 	goSearch:function(){
 		this.drawSearch();
+		this.setStyleStatic();
 	},
 	
 	createTypeObject:function(type){
@@ -49,8 +67,8 @@ EOObject.prototype={
 		if(type==="textarea"){
 			this.object=new EOTextarea(this.x, this.y, this.w, this.h);
 		}
-		if(type==="button"){
-			this.object=new EOButton(this.x, this.y, this.w, this.h);
+		if(type==="delete"){
+			this.object=new EODelete(this.x, this.y, this.w, this.h);
 		}
 		if(type==="submit"){
 			this.object=new EOSubmit(this.x, this.y, this.w, this.h);
@@ -67,8 +85,23 @@ EOObject.prototype={
 		if(type==="searchresults"){
 			this.object=new EOSearchresults(this.x, this.y, this.w, this.h);
 		}
-		if(type==="canvas"){
-			this.object=new EOCanvas(this.x, this.y, this.w, this.h);
+		if(type==="horizontalbar"){
+			this.object=new EODiagram(this.x, this.y, this.w, this.h, "default");
+		}
+		if(type==="verticalbar"){
+			this.object=new EODiagram(this.x, this.y, this.w, this.h, "horizontal bars");
+		}
+		if(type==="pareto"){
+			this.object=new EODiagram(this.x, this.y, this.w, this.h, "pareto");
+		}
+		if(type==="pie"){
+			this.object=new EODiagram(this.x, this.y, this.w, this.h, "pie");
+		}
+		if(type==="explodedpie"){
+			this.object=new EODiagram(this.x, this.y, this.w, this.h, "exploded pie");
+		}
+		if(type==="doughnut"){
+			this.object=new EODiagram(this.x, this.y, this.w, this.h, "doughnut");
 		}
 	},
 	
@@ -90,21 +123,21 @@ EOObject.prototype={
 	},
 	
 	refreshStyle:function(){
-		$(this.object.obj).removeAttr("style");
+		/*$(this.object.obj).removeAttr("style");
 		for(var i=0; i<this.styles.length; i++){
 			var attr=this.styles[i].attr;
 			var data=this.styles[i].dataM
 			$(this.object.objEdit).css(attr, data);
 			$(this.object.objStatic).css(attr, data);
-		}
+		}*/
 	},
 	
 	setStyle:function(attr, data){
-		var styleObj=new Object();
+		/*var styleObj=new Object();
 		styleObj.attr=attr;
 		styleObj.data=data;
 		this.styles.push(styleObj);
-		this.refreshStyle();
+		this.refreshStyle();*/
 	},
 
 	drawEdit:function(){
@@ -156,6 +189,7 @@ EOObject.prototype={
 		divObj.style.top=(this.object.objEdit.offsetHeight-5)+"px";
 		divObj.style.left=(this.object.objEdit.offsetWidth-5)+"px";
 		divObj.style.width="5px";
+		divObj.id="sizer";
 		divObj.style.cursor="pointer";
 		divObj.style.height="5px";
 		divObj.style.position="absolute";
@@ -178,13 +212,6 @@ EOObject.prototype={
 		});
 	},
 	
-	genXML:function(){
-		var xml="";
-		for(var i=0; i<this.styles.length; i++){
-			xml=xml+"<style attr='"+this.styles[i].attr+"' data='"+this.styles[i].data+"' />";
-		}
-		return xml;
-	},
 	
 	destroy:function(){
 		var destroy_object=this.object.objEdit;

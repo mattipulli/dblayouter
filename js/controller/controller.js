@@ -7,11 +7,35 @@ function Controller(){
 	this.controller_table=new ControllerTable();
 	this.controller_user=new ControllerUser();
 	this.controller_references=new ControllerReferences();
+	this.controller_resultchanges=new ControllerResultChanges();
+	this.controller_objectdata=new ControllerObjectData();
+	this.controller_diagram=new ControllerDiagram();
 	this.ajax=new Ajax();
 }
 
 Controller.prototype={
 
+	controller_copy:function(){
+		copied_object=jQuery.extend(true, {}, editor_size_obj);
+		ui_menubar_close();
+	},
+	
+	controller_paste:function(){
+		if(copied_object!==undefined){
+			var object=jQuery.extend(true, {}, copied_object);
+			object.goEdit();
+			current_tab.addObject(object);
+		}
+		ui_menubar_close();
+	},
+	
+	controller_cut:function(){
+		this.controller_copy();
+		this.controller_tab.controller_delete_object();
+		ui_menubar_close();
+	},
+  
+	
 	controller_load_layouts:function(){
 		$("#layout_choose_layout").html(" ");
 		$("#current_layout").html(" ");
@@ -25,6 +49,22 @@ Controller.prototype={
 		$("#current_tab").html(tab.tab_name);
 		current_tab=tab;
 		current_tab.draw();
+		current_tab.row_count();
+		$(function() {
+			$( "#slider" ).slider({
+				range: "max",
+				min: 1,
+				max: current_tab.rowLimit+1,
+				value: 1,
+				slide: function( event, ui ) {
+				$( "#rowcount" ).val( ui.value );
+					if(ui.value<=current_tab.rowLimit+1){
+						controller.controller_tab.controller_tab_set_current_row(ui.value);
+					}
+				}
+				});
+			$( "#rowcount" ).val( $( "#slider" ).slider( "value" ) );
+		});
 		ui_menubar_close();
 	},
 	
@@ -65,15 +105,22 @@ Controller.prototype={
 		});
 	},
 	
-	controller_maintain_table_structure:function(){
+	controller_tab_table_structure:function(){
 	  	var type=$("#layout_names_select option:selected").data("listtype");
 		layout_manage_current_id=$("#layout_names_select option:selected").val();
 
 		if(type==="tab"){
-			if($("#layout_names_select option:selected").data("tabtype") == 2 ){
 				ui_close_dialog();
-				ui_open_dialog('#pimennys_layout_maintain_table');
-			}
+				ui_open_dialog('#pimennys_layout_table');
+				$("#tab_table").html("");
+				var variables=new Object();
+				variables["type"]=3;
+				this.ajax.ajaxPost(variables, function(data){
+					var tables=jQuery.parseJSON( data );
+					for(var i=0; i<tables.length; i++){
+						$("#tab_table").html($("#tab_table").html() + "<option value='"+tables[i].table_name+"'>"+tables[i].table_name+"</option>");
+					}
+		});	
 		}
 	},
 
@@ -83,6 +130,7 @@ Controller.prototype={
 		
 		if(type==="table"){
 			ui_close_dialog();
+			$("#db_manage_new_table_name").val("");
 			ui_open_dialog('#pimennys_db_manage_name_table');
 		}
 		
@@ -113,10 +161,12 @@ Controller.prototype={
 		
 		if(type==="layout"){
 			ui_close_dialog();
+			$("#layout_manage_new_layout_name").val("");
 			ui_open_dialog('#pimennys_layout_manage_name_layout');
 		}
 		if(type==="tab"){
 			ui_close_dialog();
+			$("#layout_manage_new_tab_name").val("");
 			ui_open_dialog('#pimennys_layout_manage_name_tab');
 		}
 	},
@@ -150,6 +200,8 @@ Controller.prototype={
 		
 		if(type==="table"){
 			ui_close_dialog();
+			$("#add_column_column_name").val("");
+			$("#add_column_column_type option:eq(0)").prop('selected', true);
 			ui_open_dialog('#pimennys_db_add_column');
 		}
 	},
@@ -160,6 +212,8 @@ Controller.prototype={
 		
 		if(type==="layout"){
 			ui_close_dialog();
+			$("#layout_new_tab_name").val("");
+			$("#layout_new_tab_type option:eq(0)").prop('selected', true);
 			ui_open_dialog('#pimennys_layout_newtab');
 		}
 	},
@@ -170,6 +224,7 @@ Controller.prototype={
 
 		if(type==="tab"){
 			ui_close_dialog();
+			$("#layout_update_tab_type option:eq(0)").prop('selected', true);
 			ui_open_dialog('#pimennys_layout_manage_change_type');
 		}
 	},
@@ -189,6 +244,12 @@ Controller.prototype={
 			current_tab.refresh();
 			current_tab.getRow();
 		});	
+	},
+	
+	controller_new_table_structure:function(){
+		$("#db_new_table_name").val("");
+		$("#db_new_table_column_count").val("");
+		$("#db_new_table_columns").html("");
 	}
 	
 
